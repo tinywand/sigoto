@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業務Hub</title>
+<style>
+  :root {
+    --ink: #4a4458;
+    --ink-soft: #8d86a0;
+    --glass: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --lavender: #c9b8f5;
+    --pink: #f8c4dc;
+    --peach: #ffd8c2;
+    --sky: #bfdcff;
+    --mint: #c4eedd;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, "SF Pro Rounded", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 15% 20%, #ffd9ec 0%, transparent 45%),
+      radial-gradient(circle at 85% 15%, #d6e6ff 0%, transparent 45%),
+      radial-gradient(circle at 70% 90%, #e5d9ff 0%, transparent 50%),
+      radial-gradient(circle at 10% 85%, #ffe8d6 0%, transparent 45%),
+      #f6f0ff;
+    background-attachment: fixed;
+  }
+  header {
+    padding: 28px 32px 8px;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    color: var(--ink);
+  }
+  header small {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: .2em;
+    color: var(--ink-soft);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 250px 1fr 290px;
+    gap: 20px;
+    padding: 16px 32px 32px;
+  }
+  .panel {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    padding: 22px;
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    box-shadow: 0 8px 32px rgba(160, 140, 210, 0.18);
+  }
+  .panel h2 {
+    margin: 0 0 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    color: var(--ink-soft);
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--lavender), var(--sky));
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(170, 150, 230, 0.25);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(170, 150, 230, 0.35);
+  }
+  .btn.game { background: linear-gradient(135deg, var(--pink), var(--peach)); }
+  .divider {
+    margin: 20px 0 16px;
+    border: none;
+    border-top: 1px solid rgba(255,255,255,.9);
+  }
+
+  /* 検索 */
+  #search {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: var(--ink);
+    border: 1px solid rgba(255,255,255,.95);
+    border-radius: 999px;
+    background: rgba(255,255,255,.75);
+    outline: none;
+    box-shadow: inset 0 2px 6px rgba(170, 150, 230, 0.12);
+  }
+  #search:focus { box-shadow: 0 0 0 4px rgba(201, 184, 245, .45); }
+  #search::placeholder { color: #b9b3c9; }
+  #results { margin-top: 18px; }
+  .result-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .result-row .main-btn {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,.9);
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--sky), var(--mint));
+    color: var(--ink);
+    font-size: 15px;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(150, 190, 230, 0.25);
+    transition: transform .15s ease;
+  }
+  .result-row .main-btn:hover { transform: translateY(-2px); }
+  .result-row .main-btn.nas { background: linear-gradient(135deg, var(--lavender), var(--pink)); }
+  .copy-btn {
+    padding: 0 16px;
+    border: 1px solid rgba(255,255,255,.95);
+    border-radius: 18px;
+    background: rgba(255,255,255,.7);
+    color: var(--ink-soft);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s ease;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,.95); }
+  .hint { color: #b0a9c2; font-size: 14px; }
+
+  /* 開発中 */
+  .wip {
+    padding: 20px 14px;
+    margin-bottom: 14px;
+    border: 1.5px dashed rgba(180, 165, 220, .7);
+    border-radius: 20px;
+    background: rgba(255,255,255,.35);
+    color: #b0a9c2;
+    text-align: center;
+    font-size: 13px;
+  }
+  .wip strong { display: block; color: var(--ink-soft); margin-bottom: 4px; font-size: 15px; }
+</style>
+</head>
+<body>
+
+<header>
+  業務Hub
+  <small>WORK HUB</small>
+</header>
+
+<div class="layout">
+
+  <!-- 左：恒常ボタン + ゲーム -->
+  <aside class="panel">
+    <h2>よく使う業務</h2>
+    <a class="btn" href="https://example.com/link1" target="_blank" rel="noopener">業務リンク1</a>
+    <a class="btn" href="https://example.com/link2" target="_blank" rel="noopener">業務リンク2</a>
+
+    <hr class="divider">
+
+    <h2>DX</h2>
+    <a class="btn game" href="sushida/">DX能力向上システム</a>
+  </aside>
+
+  <!-- 中央：検索付き業務リンク -->
+  <main class="panel">
+    <h2>業務リンク検索</h2>
+    <input id="search" type="text" placeholder="対応ワードを入力（例：日報、申請、共有）" autocomplete="off">
+    <div id="results"><p class="hint">ワードを入力すると、対応するリンクが表示されます。</p></div>
+  </main>
+
+  <!-- 右：タスク管理 / メモ -->
+  <aside class="panel">
+    <div class="wip"><strong>タスク管理</strong>開発中</div>
+    <div class="wip"><strong>メモ</strong>開発中</div>
+  </aside>
+
+</div>
+
+<script>
+  // ▼ 検索用リンクデータ（ここに追加していく）
+  // nas: true のものは、ブラウザで開けないのでコピー専用ボタンになる
+  const LINKS = [
+    { name: "リンクその1", keywords: ["日報", "報告"],   url: "https://example.com/link1" },
+    { name: "リンクその2", keywords: ["申請", "届出"],   url: "https://example.com/link2" },
+    { name: "リンクその3", keywords: ["共有", "資料"],   url: "https://example.com/link3" },
+    { name: "NASフォルダ（例）", keywords: ["nas", "共有", "資料"], url: "\\\\nas\\share\\folder", nas: true },
+  ];
+
+  const search = document.getElementById("search");
+  const results = document.getElementById("results");
+
+  function copyText(text, btn) {
+    const done = () => {
+      const old = btn.textContent;
+      btn.textContent = "コピー済";
+      setTimeout(() => (btn.textContent = old), 1200);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done);
+    } else {
+      // file:// や http:// で開いた場合の代替
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      done();
+    }
+  }
+
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    results.innerHTML = "";
+
+    if (!q) {
+      results.innerHTML = '<p class="hint">ワードを入力すると、対応するリンクが表示されます。</p>';
+      return;
+    }
+
+    const hits = LINKS.filter(l =>
+      l.name.toLowerCase().includes(q) ||
+      l.keywords.some(k => k.toLowerCase().includes(q))
+    );
+
+    if (hits.length === 0) {
+      results.innerHTML = '<p class="hint">該当するリンクがありません。</p>';
+      return;
+    }
+
+    hits.forEach(l => {
+      const row = document.createElement("div");
+      row.className = "result-row";
+
+      let main;
+      if (l.nas) {
+        // NAS：開かずにコピーのみ
+        main = document.createElement("button");
+        main.className = "main-btn nas";
+        main.textContent = l.name<http://l.name> + "（クリックでパスをコピー）";
+        main.addEventListener("click", () => copyText(l.url, main));
+      } else {
+        main = document.createElement("a");
+        main.className = "main-btn";
+        main.textContent = l.name<http://l.name>;
+        main.href = l.url;
+        main.target = "_blank";
+        main.rel = "noopener";
+      }
+
+      const copy = document.createElement("button");
+      copy.className = "copy-btn";
+      copy.textContent = "URLコピー";
+      copy.addEventListener("click", () => copyText(l.url, copy));
+
+      row.appendChild(main);
+      row.appendChild(copy);
+      results.appendChild(row);
+    });
+  }
+
+  search.addEventListener("input", render);
+</script>
+
+</body>
+</html>
+
