@@ -1,1 +1,23 @@
+const AI_RESPONSES = [
 
+  {
+    text: "はぁ？そんなこともわからないの？少しは自分で調べるっていう努力とかしてみたら？",
+    url: "https://www.google.com/search?q="
+  },
+
+  {
+    text: "あんたのそのスマートフォンは飾りなわけ？なんでもあたしに聞けばいいって思わないでよね。",
+    url: "https://www.google.com/search?q="
+  },
+
+  {
+    text: "その程度ならGoogle先生の方が詳しいに決まってるでしょ。",
+    url: "https://www.google.com/search?q="
+  },
+
+  {
+    text: "まず検索。それから質問。それくらい順番考えなさいよ。",
+    url: "https://www.google.com/search?q="
+  }
+
+];
