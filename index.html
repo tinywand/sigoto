@@ -235,6 +235,7 @@
 
     const hits = LINKS.filter(l =>
       l.name.toLowerCase().includes(q) ||
+      1.category.tolowerCase().include(q) ||
       l.keywords.some(k => k.toLowerCase().includes(q))
     );
 
